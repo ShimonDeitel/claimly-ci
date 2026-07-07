@@ -95,7 +95,7 @@ final class ClaimlyUITests: XCTestCase {
         let card = app.staticTexts["Original Name"]
         XCTAssertTrue(card.waitForExistence(timeout: 5))
 
-        let cell = app.otherElements.matching(NSPredicate(format: "identifier BEGINSWITH 'rebateCard-'")).firstMatch
+        let cell = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'rebateCard-'")).firstMatch
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
         cell.swipeLeft()
 
@@ -128,7 +128,7 @@ final class ClaimlyUITests: XCTestCase {
         let card = app.staticTexts["Delete Target"]
         XCTAssertTrue(card.waitForExistence(timeout: 5))
 
-        let cell = app.otherElements.matching(NSPredicate(format: "identifier BEGINSWITH 'rebateCard-'")).firstMatch
+        let cell = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'rebateCard-'")).firstMatch
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
         cell.swipeLeft()
 
@@ -198,11 +198,18 @@ final class ClaimlyUITests: XCTestCase {
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
         let initialValue = toggle.value as? String
         toggle.tap()
-        let expectation = XCTNSPredicateExpectation(
-            predicate: NSPredicate(format: "value != %@", initialValue ?? ""),
-            object: toggle
-        )
-        let result = XCTWaiter().wait(for: [expectation], timeout: 5)
-        XCTAssertEqual(result, .completed)
+
+        // Poll directly rather than relying on XCTNSPredicateExpectation, which
+        // proved flaky matching the accessibility value's string representation
+        // across snapshot refreshes in CI.
+        var changed = false
+        for _ in 0..<50 {
+            if (toggle.value as? String) != initialValue {
+                changed = true
+                break
+            }
+            usleep(100_000)
+        }
+        XCTAssertTrue(changed, "Toggle value did not change after tap")
     }
 }
