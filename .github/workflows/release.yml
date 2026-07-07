@@ -84,7 +84,7 @@ jobs:
             echo "Could not confirm TEST SUCCEEDED marker — aborting."
             exit 1
           fi
-          if grep -qi "no tests found\|0 tests" "$RUNNER_TEMP/test.log"; then
+          if grep -qi "no tests found\|Executed 0 tests\b" "$RUNNER_TEMP/test.log"; then
             echo "Suspicious: log mentions no tests were found — aborting."
             exit 1
           fi
