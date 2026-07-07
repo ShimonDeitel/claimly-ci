@@ -13,8 +13,8 @@ jobs:
       BUNDLE_ID: com.shimondeitel.claimly
       TEAM_ID: W7Q885Q59C
       SIGN_IDENTITY_SHA1: 28783A84B07D8DFC5FCF311F7B4D7FB46594C728
-      APP_ID: ""   # TBD - fill in during compile phase (ASC app record id)
-      IAP_ID: ""   # TBD - fill in during compile phase (claimly_pro IAP id)
+      APP_ID: "6788340091"
+      IAP_ID: "6788340887"
     steps:
       - uses: actions/checkout@v4
       - uses: maxim-lobanov/setup-xcode@v1
