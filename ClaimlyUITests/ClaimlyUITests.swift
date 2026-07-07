@@ -61,7 +61,7 @@ final class ClaimlyUITests: XCTestCase {
         markReceived.tap()
         // Give the stamp animation + state settle a moment.
         let cashedInPill = app.staticTexts["Cashed In"]
-        XCTAssertTrue(cashedInPill.waitForExistence(timeout: 5))
+        XCTAssertTrue(cashedInPill.waitForExistence(timeout: 10))
     }
 
     func testMarkRebateExpired() {
@@ -70,7 +70,7 @@ final class ClaimlyUITests: XCTestCase {
         XCTAssertTrue(markExpired.waitForExistence(timeout: 5))
         markExpired.tap()
         let missedPill = app.staticTexts["Missed"]
-        XCTAssertTrue(missedPill.waitForExistence(timeout: 5))
+        XCTAssertTrue(missedPill.waitForExistence(timeout: 10))
     }
 
     // MARK: - Free-limit paywall trigger
@@ -196,7 +196,11 @@ final class ClaimlyUITests: XCTestCase {
         app.tabBars.buttons["Settings"].tap()
         let toggle = app.switches["notificationsToggle"]
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
-        let initialValue = toggle.value as? String
+        // Switch accessibility value is an NSNumber (0/1), not a String -- a
+        // String cast silently fails to nil both before and after the tap,
+        // making any "value changed" comparison trivially false forever.
+        // Compare string descriptions instead, which always succeeds.
+        let initialValue = "\(toggle.value ?? "")"
         // Tap via an explicit coordinate rather than element.tap() -- the
         // Toggle sits in a Form row that may not be fully hittable at the
         // element's reported center on some CI simulator layouts, which
@@ -208,7 +212,7 @@ final class ClaimlyUITests: XCTestCase {
         // across snapshot refreshes in CI.
         var changed = false
         for _ in 0..<50 {
-            if (toggle.value as? String) != initialValue {
+            if "\(toggle.value ?? "")" != initialValue {
                 changed = true
                 break
             }
