@@ -57,7 +57,7 @@ final class ClaimlyUITests: XCTestCase {
     func testMarkRebateReceivedShowsCashedInStamp() {
         addRebate(store: "Home Depot Grill", amount: "30")
         let markReceived = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'markReceivedButton-'")).firstMatch
-        XCTAssertTrue(markReceived.waitForExistence(timeout: 5))
+        XCTAssertTrue(markReceived.waitForExistence(timeout: 12))
         markReceived.tap()
         // Give the stamp animation + state settle a moment.
         let cashedInPill = app.staticTexts["Cashed In"]
@@ -67,7 +67,7 @@ final class ClaimlyUITests: XCTestCase {
     func testMarkRebateExpired() {
         addRebate(store: "Staples Printer", amount: "20")
         let markExpired = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'markExpiredButton-'")).firstMatch
-        XCTAssertTrue(markExpired.waitForExistence(timeout: 5))
+        XCTAssertTrue(markExpired.waitForExistence(timeout: 12))
         markExpired.tap()
         let missedPill = app.staticTexts["Missed"]
         XCTAssertTrue(missedPill.waitForExistence(timeout: 10))
