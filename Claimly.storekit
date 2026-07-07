@@ -1,0 +1,29 @@
+{
+  "identifier" : "claimly",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "claimly_pro",
+      "localizations" : [
+        {
+          "description" : "Unlocks unlimited tracked rebates and the total-at-risk summary",
+          "displayName" : "Claimly Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "claimly_pro",
+      "referenceName" : "Claimly Pro Unlock",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
