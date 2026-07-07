@@ -219,18 +219,16 @@ struct RebateCardView: View {
                 stampOverlay
             }
         }
-        .accessibilityElement(children: .combine)
         .accessibilityIdentifier("rebateCard-\(rebate.id.uuidString)")
-        .swipeActions(edge: .trailing) {
+        .contextMenu {
+            Button(action: onEdit) {
+                Label("Edit", systemImage: "pencil")
+            }
+            .accessibilityIdentifier("editRebateButton-\(rebate.id.uuidString)")
             Button(role: .destructive, action: onDelete) {
                 Label("Delete", systemImage: "trash")
             }
             .accessibilityIdentifier("deleteRebateButton-\(rebate.id.uuidString)")
-            Button(action: onEdit) {
-                Label("Edit", systemImage: "pencil")
-            }
-            .tint(Theme.safeBlue)
-            .accessibilityIdentifier("editRebateButton-\(rebate.id.uuidString)")
         }
         .onAppear {
             if bucket == .critical {

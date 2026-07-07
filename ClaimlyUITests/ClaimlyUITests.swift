@@ -97,7 +97,7 @@ final class ClaimlyUITests: XCTestCase {
 
         let cell = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'rebateCard-'")).firstMatch
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
-        cell.swipeLeft()
+        cell.press(forDuration: 1.0)
 
         let editButton = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'editRebateButton-'")).firstMatch
         XCTAssertTrue(editButton.waitForExistence(timeout: 5))
@@ -130,7 +130,7 @@ final class ClaimlyUITests: XCTestCase {
 
         let cell = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'rebateCard-'")).firstMatch
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
-        cell.swipeLeft()
+        cell.press(forDuration: 1.0)
 
         let deleteButton = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'deleteRebateButton-'")).firstMatch
         XCTAssertTrue(deleteButton.waitForExistence(timeout: 5))
@@ -197,7 +197,11 @@ final class ClaimlyUITests: XCTestCase {
         let toggle = app.switches["notificationsToggle"]
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
         let initialValue = toggle.value as? String
-        toggle.tap()
+        // Tap via an explicit coordinate rather than element.tap() -- the
+        // Toggle sits in a Form row that may not be fully hittable at the
+        // element's reported center on some CI simulator layouts, which
+        // silently no-ops a plain tap().
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
 
         // Poll directly rather than relying on XCTNSPredicateExpectation, which
         // proved flaky matching the accessibility value's string representation
